@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Arduino Light Control</title>
+
+  <!-- Imports Firebase SDK -->
+  <script type="module">
+    // Imports necessary Firebase modules using ES6 import statements
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
+    import { getDatabase, ref, set } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js';
+  
+    // Firebase configuration
+    const firebaseConfig = {
+
+    };
+  
+    // Initializes Firebase app and database
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+  
+    // Function to toggle LED state in Firebase database based on button clicks
+    function toggleLED(activeColor) {
+      const colors = ['Red', 'Green', 'Blue'];
+      colors.forEach(color => {
+        const ledRef = ref(database, 'LEDcolor/' + color);
+        set(ledRef, color === activeColor);
+      });
+    }
+
+    // Event listeners for button clicks
+    document.addEventListener('DOMContentLoaded', (event) => {
+      document.querySelector('.red').addEventListener('click', () => toggleLED('Red'));
+      document.querySelector('.green').addEventListener('click', () => toggleLED('Green'));
+      document.querySelector('.blue').addEventListener('click', () => toggleLED('Blue'));
+  });
+  </script>
+  
+
+  <!-- CSS rules for styling and laying out the appearance of the webpage -->
+  <style>
+    body {
+      background: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .traffic-control {
+      text-align: center;
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 300px;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 32px;
+    }
+    button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      text-transform: uppercase;
+      margin: 10px;
+      width: 80%;
+      color: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      transition: background 0.3s, transform 0.3s;
+    }
+    button:active {
+      transform: translateY(2px);
+    }
+    .red { background: red; }
+    .green { background: green; }
+    .blue { background: blue; }
+  </style>
+</head>
+<body>
+  <div class="traffic-control">
+    <h1>Control Panel</h1>
+    <button class="red">Red</button>
+    <button class="green">Green</button>
+    <button class="blue">Blue</button>
+  </div>
+</body>
+</html>
